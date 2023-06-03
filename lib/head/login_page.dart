@@ -76,7 +76,7 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
                       Container(
                         height: 300,
                         width: 2000,
-                        child: Image.asset("assets/images/hr2.jpg"),
+                        child: Image.asset("assets/images/hrbg.png"),
                       ),
                     ],
                   ),

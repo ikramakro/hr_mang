@@ -30,7 +30,7 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Image.asset("assets/images/hr2.jpg"),
+                      child: Image.asset("assets/images/hrbg.png"),
                       height: 300,
                       width: 2000,
                     ),

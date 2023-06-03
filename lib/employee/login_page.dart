@@ -41,6 +41,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
           builder: (_) => const EmployeeHomeScreen(),
         ),
       );
+      Fluttertoast.showToast(msg: 'Login Sucessfully');
       setState(() {
         loading = false;
       });
@@ -76,7 +77,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                       Container(
                         height: 300,
                         width: 2000,
-                        child: Image.asset("assets/images/hr2.jpg"),
+                        child: Image.asset("assets/images/hrbg.png"),
                       ),
                     ],
                   ),

@@ -23,7 +23,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
           children: [
             const Image(
               image: AssetImage(
-                'assets/images/hr1.jpg',
+                'assets/images/hrbg.png',
               ),
             ),
             10.heightBox,

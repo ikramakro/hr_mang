@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               10.heightBox,
               Image.asset(
-                "assets/images/hr1.jpg",
+                "assets/images/hrbg.png",
               ),
               10.heightBox,
               const Text(

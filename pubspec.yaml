@@ -42,6 +42,7 @@ dependencies:
   fluttertoast: ^8.2.2
   font_awesome_flutter: ^10.4.0
   slide_to_act: ^2.0.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

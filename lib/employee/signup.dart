@@ -37,7 +37,7 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Image.asset("assets/images/hr2.jpg"),
+                      child: Image.asset("assets/images/hrbg.png"),
                       height: 300,
                       width: 2000,
                     ),
@@ -172,7 +172,7 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
                             msg: 'Name must br atleast 4 characters');
                       } else if (phoneContoller.text.length < 11) {
                         Fluttertoast.showToast(
-                            msg: 'Number must br atleast 11 numbers');
+                            msg: 'Number must be atleast 11 numbers');
                       } else if (!emailContoller.text.contains("@")) {
                         Fluttertoast.showToast(msg: 'Email is not valid');
                       } else {
@@ -243,6 +243,8 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
                               msg: "Account created Successfully"),
                         })
               });
-    } catch (e) {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Account creation failed');
+    }
   }
 }
