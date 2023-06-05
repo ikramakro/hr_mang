@@ -16,6 +16,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   double screenWidth = 0;
   int currentIndex = 1;
   List<IconData> navigationIcons = [
+    // ignore: deprecated_member_use
     FontAwesomeIcons.calendarAlt,
     FontAwesomeIcons.check,
     FontAwesomeIcons.user,

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,7 +52,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -60,7 +62,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               snapshot.data as DocumentSnapshot<Map<String, dynamic>>?;
 
           if (!document!.exists) {
-            return Center(
+            return const Center(
                 child: Text('No check-in/check-out history available'));
           }
 
@@ -71,32 +73,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
           final history = userData['history'];
 
           return ListView(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             children: [
               Text(
                 'User: $userName',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 'Check-in: ${checkIn != null ? DateFormat('yyyy-MM-dd HH:mm a').format(checkIn.toDate()) : 'N/A'}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 'Check-out: ${checkOut != null ? DateFormat('yyyy-MM-dd HH:mm a').format(checkOut.toDate()) : 'N/A'}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 'History:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               if (history != null)
                 ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: history.length,
                   itemBuilder: (BuildContext context, int index) {
                     final item = history[index];
