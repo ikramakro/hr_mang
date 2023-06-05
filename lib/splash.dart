@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hr_management_system/head/home_page.dart';
 import 'package:hr_management_system/onboard.dart';
 import 'package:velocity_x/velocity_x.dart';
 

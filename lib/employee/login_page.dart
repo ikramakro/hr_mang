@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/employee/home.dart';
 import 'package:hr_management_system/employee/signup.dart';
+import 'package:hr_management_system/progress.dart';
 
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
@@ -27,6 +28,13 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   }
 
   void login() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ProgressDialogue(
+            message: 'Processing please wait',
+          );
+        });
     setState(() {
       loading = true;
     });

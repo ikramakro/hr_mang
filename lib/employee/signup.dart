@@ -17,6 +17,8 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
   TextEditingController phoneContoller = TextEditingController();
   TextEditingController emailContoller = TextEditingController();
   TextEditingController passContoller = TextEditingController();
+  TextEditingController durationContoller = TextEditingController();
+  TextEditingController salaryContoller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -231,6 +233,8 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
                   'phonenumber': phoneContoller.text,
                   'email': emailContoller.text,
                   'password': passContoller.text,
+                  'duration': durationContoller.text,
+                  'salary': salaryContoller.text,
                 }).then((signedInUser) => {
                           print('Succes'),
                           Navigator.pushReplacement(

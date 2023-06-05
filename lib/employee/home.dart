@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hr_management_system/employee/calender.dart';
+import 'package:hr_management_system/employee/history.dart';
 import 'package:hr_management_system/employee/profile.dart';
 import 'package:hr_management_system/employee/today.dart';
 
@@ -14,7 +14,7 @@ class EmployeeHomeScreen extends StatefulWidget {
 class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   double screenHeight = 0;
   double screenWidth = 0;
-  int currentIndex = 0;
+  int currentIndex = 1;
   List<IconData> navigationIcons = [
     FontAwesomeIcons.calendarAlt,
     FontAwesomeIcons.check,
@@ -28,7 +28,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
       body: IndexedStack(
         index: currentIndex,
         children: const [
-          CalenderScreen(),
+          HistoryScreen(),
           TodayScreen(),
           ProfileScreen(),
         ],

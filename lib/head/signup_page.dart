@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/head/home_page.dart';
 import 'package:hr_management_system/head/login_page.dart';
 
+import '../progress.dart';
+
 class HeadSignupPage extends StatefulWidget {
   const HeadSignupPage({super.key});
 
@@ -218,6 +220,14 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
     // ignore: await_only_futures, unused_local_variable
     User? user = await FirebaseAuth.instance.currentUser;
     try {
+      // ignore: use_build_context_synchronously
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ProgressDialogue(
+              message: 'Processing please wait',
+            );
+          });
       await auth
           .createUserWithEmailAndPassword(
               email: emailContoller.text, password: passContoller.text)
@@ -235,7 +245,7 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const HeadHomeScreen(),
+                              builder: (_) => HeadHomeScreen(),
                             ),
                           ),
                           Fluttertoast.showToast(

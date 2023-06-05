@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/head/home_page.dart';
 import 'package:hr_management_system/head/signup_page.dart';
 
+import '../progress.dart';
+
 class HeadLoginPage extends StatefulWidget {
   const HeadLoginPage({super.key});
 
@@ -27,6 +29,13 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
   }
 
   void login() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ProgressDialogue(
+            message: 'Processing please wait',
+          );
+        });
     setState(() {
       loading = true;
     });
@@ -38,7 +47,7 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => const HeadHomeScreen(),
+          builder: (_) => HeadHomeScreen(),
         ),
       );
       setState(() {

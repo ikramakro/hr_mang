@@ -14,8 +14,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userName = '';
   String userEmail = '';
   String userPhone = '';
-  String userSalary = '';
-  String userDuration = '';
 
   @override
   void initState() {
@@ -36,10 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> fetchUserData() async {
     try {
       final DocumentSnapshot<Map<String, dynamic>> snapshot =
-          await FirebaseFirestore.instance
-              .collection('employees')
-              .doc(uid)
-              .get();
+          await FirebaseFirestore.instance.collection('head').doc(uid).get();
 
       final Map<String, dynamic>? userData = snapshot.data();
 
@@ -48,8 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           userName = userData['name'] ?? '';
           userEmail = userData['email'] ?? '';
           userPhone = userData['phonenumber'] ?? '';
-          userDuration = userData['duration'] ?? '';
-          userSalary = userData['salary'] ?? '';
         });
         print('Fetched user data: $userName, $userEmail, $userPhone');
       }
@@ -72,17 +65,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'User Profile',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
+            // const Text(
+            //   'Profile',
+            //   style: TextStyle(
+            //     fontSize: 20,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
+            // const SizedBox(height: 20),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text(
+              leading: const Icon(Icons.person),
+              title: const Text(
                 'Name',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -93,8 +86,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const Divider(),
             ListTile(
-              leading: Icon(Icons.email),
-              title: Text(
+              leading: const Icon(Icons.email),
+              title: const Text(
                 'Email',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -105,35 +98,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const Divider(),
             ListTile(
-              leading: Icon(Icons.phone),
-              title: Text(
+              leading: const Icon(Icons.phone),
+              title: const Text(
                 'Phone',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
                 userPhone,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.money),
-              title: Text(
-                'Salary',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                userSalary,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.work),
-              title: Text(
-                'Duration',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                userDuration,
                 style: const TextStyle(fontSize: 16),
               ),
             ),
