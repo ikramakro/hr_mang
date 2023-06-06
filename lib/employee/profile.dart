@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hr_management_system/progress.dart';
+import 'package:hr_management_system/splash.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -66,6 +68,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.red,
+        actions: [
+          IconButton(
+            onPressed: () {
+              signOut(context);
+            },
+            icon: const Icon(
+              Icons.logout,
+              size: 26,
+            ),
+          ),
+        ],
         automaticallyImplyLeading: false,
         title: const Text('Profile'),
       ),
@@ -83,8 +96,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 20),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text(
+              leading: const Icon(Icons.person),
+              title: const Text(
                 'Name',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -95,8 +108,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const Divider(),
             ListTile(
-              leading: Icon(Icons.email),
-              title: Text(
+              leading: const Icon(Icons.email),
+              title: const Text(
                 'Email',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -107,8 +120,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const Divider(),
             ListTile(
-              leading: Icon(Icons.phone),
-              title: Text(
+              leading: const Icon(Icons.phone),
+              title: const Text(
                 'Phone',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -118,8 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.money),
-              title: Text(
+              leading: const Icon(Icons.money),
+              title: const Text(
                 'Salary',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -129,8 +142,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.work),
-              title: Text(
+              leading: const Icon(Icons.work),
+              title: const Text(
                 'Duration',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -143,5 +156,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    try {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ProgressDialogue(
+              message: 'Signing Out',
+            );
+          });
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SplashScreen(),
+        ),
+        (route) => false,
+      );
+      print('User signed out successfully.');
+    } catch (e) {
+      print('Error signing out: $e');
+    }
   }
 }

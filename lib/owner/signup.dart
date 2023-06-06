@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/owner/home_page.dart';
 import 'package:hr_management_system/owner/login_page.dart';
+import 'package:hr_management_system/progress.dart';
 
 class OnwerSignupPage extends StatefulWidget {
   const OnwerSignupPage({super.key});
@@ -10,6 +15,10 @@ class OnwerSignupPage extends StatefulWidget {
 }
 
 class _OnwerSignupPageState extends State<OnwerSignupPage> {
+  TextEditingController nameContoller = TextEditingController();
+  TextEditingController phoneContoller = TextEditingController();
+  TextEditingController emailContoller = TextEditingController();
+  TextEditingController passContoller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +55,8 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
                     fontWeight: FontWeight.bold,
                   )),
             ),
-            const TextField(
+            TextField(
+              controller: nameContoller,
               decoration: InputDecoration(
                 labelText: "Name",
                 hintText: "name",
@@ -67,7 +77,8 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
               ),
               textCapitalization: TextCapitalization.sentences,
             ),
-            const TextField(
+            TextField(
+              controller: phoneContoller,
               decoration: InputDecoration(
                 labelText: "Phone Number",
                 hintText: "Phone Number",
@@ -88,7 +99,8 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
               ),
               keyboardType: TextInputType.number,
             ),
-            const TextField(
+            TextField(
+              controller: emailContoller,
               decoration: InputDecoration(
                 labelText: "Email",
                 hintText: "email",
@@ -107,9 +119,10 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
                   fontSize: 16,
                 ),
               ),
-              textCapitalization: TextCapitalization.sentences,
+              keyboardType: TextInputType.emailAddress,
             ),
-            const TextField(
+            TextField(
+              controller: passContoller,
               obscureText: true,
               decoration: InputDecoration(
                 labelText: "Password",
@@ -156,12 +169,17 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const OwnerHomeScreen(),
-                        ),
-                      );
+                      if (nameContoller.text.length < 4) {
+                        Fluttertoast.showToast(
+                            msg: 'Name must br atleast 4 characters');
+                      } else if (phoneContoller.text.length < 11) {
+                        Fluttertoast.showToast(
+                            msg: 'Number must br atleast 11 numbers');
+                      } else if (!emailContoller.text.contains("@")) {
+                        Fluttertoast.showToast(msg: 'Email is not valid');
+                      } else {
+                        registerOwner();
+                      }
                     },
                     borderRadius: BorderRadius.circular(30),
                     child: const Center(
@@ -194,5 +212,50 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
         ),
       ),
     );
+  }
+
+  Future registerOwner() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    // ignore: await_only_futures, unused_local_variable
+    User? user = await FirebaseAuth.instance.currentUser;
+    try {
+      // ignore: use_build_context_synchronously
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ProgressDialogue(
+              message: 'Processing please wait',
+            );
+          });
+      await auth
+          .createUserWithEmailAndPassword(
+              email: emailContoller.text, password: passContoller.text)
+          .then((signedInUser) => {
+                FirebaseFirestore.instance
+                    .collection('owner')
+                    .doc(signedInUser.user!.uid)
+                    .set({
+                  'name': nameContoller.text,
+                  'phonenumber': phoneContoller.text,
+                  'email': emailContoller.text,
+                  'password': passContoller.text,
+                }).then((signedInUser) => {
+                          print('Success'),
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const OwnerHomeScreen(),
+                            ),
+                          ),
+                          Fluttertoast.showToast(
+                            msg: "Account created Successfully",
+                            textColor: Colors.white,
+                          ),
+                        })
+              });
+    } catch (e) {
+      print('error' + e.toString());
+      Fluttertoast.showToast(msg: 'Accouunt creation failed');
+    }
   }
 }

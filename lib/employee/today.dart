@@ -261,7 +261,7 @@ class _TodayScreenState extends State<TodayScreen> {
                     fontFamily: 'NexaRegular',
                   ),
                   outerColor: Colors.white,
-                  innerColor: hasCheckedIn ? Colors.green : Colors.red,
+                  innerColor: hasCheckedIn ? Colors.red : Colors.green,
                   key: key,
                   onSubmit: () async {
                     if (isCheckIn) {
@@ -319,7 +319,6 @@ class _TodayScreenState extends State<TodayScreen> {
         isCheckIn = true;
         buttonText = 'Slide to Check Out';
         hasCheckedIn = true; // Update the flag
-        isCheckIn = false;
       });
     } catch (error) {
       print('Error checking in: $error');
@@ -347,7 +346,6 @@ class _TodayScreenState extends State<TodayScreen> {
         isCheckIn = false;
         buttonText = 'Slide to Check In';
         hasCheckedIn = false; // Update the flag
-        isCheckIn = true;
       });
     } catch (error) {
       print('Error checking out: $error');

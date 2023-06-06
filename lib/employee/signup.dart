@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/employee/home.dart';
 import 'package:hr_management_system/employee/login_page.dart';
+import 'package:hr_management_system/progress.dart';
 
 class EmployeeSignupPage extends StatefulWidget {
   const EmployeeSignupPage({super.key});
@@ -221,6 +224,14 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
     // ignore: await_only_futures, unused_local_variable
     User? user = await FirebaseAuth.instance.currentUser;
     try {
+      // ignore: use_build_context_synchronously
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ProgressDialogue(
+              message: 'Processing please wait',
+            );
+          });
       await auth
           .createUserWithEmailAndPassword(
               email: emailContoller.text, password: passContoller.text)

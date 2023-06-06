@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +122,7 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
                   fontSize: 16,
                 ),
               ),
-              textCapitalization: TextCapitalization.sentences,
+              keyboardType: TextInputType.emailAddress,
             ),
             TextField(
               controller: passContoller,
@@ -252,6 +254,9 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
                               msg: "Account created Successfully"),
                         })
               });
-    } catch (e) {}
+    } catch (e) {
+      print('error' + e.toString());
+      Fluttertoast.showToast(msg: 'Accouunt creation failed');
+    }
   }
 }

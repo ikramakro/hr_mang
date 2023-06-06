@@ -29,7 +29,11 @@ class UserListScreen extends StatelessWidget {
         stream: FirebaseFirestore.instance.collection('employees').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.red,
+              ),
+            );
           }
 
           final users = snapshot.data!.docs;

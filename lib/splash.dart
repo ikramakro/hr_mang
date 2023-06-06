@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hr_management_system/employee/home.dart';
 import 'package:hr_management_system/head/home_page.dart';
@@ -6,10 +8,6 @@ import 'package:hr_management_system/onboard.dart';
 import 'package:hr_management_system/owner/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
-  final String userId;
-
-  SplashScreen({required this.userId});
-
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -18,73 +16,80 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    checkUserPanel();
+    startTimer();
   }
 
-  Future<void> checkUserPanel() async {
-    String panel = await getUserPanel(widget.userId);
-
-    // Panel-based navigation or display logic
-    if (panel == 'owner') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => OwnerHomeScreen(),
-        ),
-      );
-    } else if (panel == 'head') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => HeadHomeScreen(),
-        ),
-      );
-    } else if (panel == 'employee') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => EmployeeHomeScreen(),
-        ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => OnboardScreen(),
-        ),
-      );
-    }
+  void startTimer() {
+    Timer(const Duration(seconds: 3), () {
+      checkUserAuthentication();
+    });
   }
 
-  Future<String> getUserPanel(String userId) async {
-    String panel = '';
+  void checkUserAuthentication() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
 
-    try {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
+    if (user != null) {
+      // User is authenticated
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
+          .collection('employees')
+          .doc(user.uid)
           .get();
 
       if (snapshot.exists) {
-        Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
-        if (data != null) {
-          panel = data['panel'];
+        // User exists in 'employees' collection
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const EmployeeHomeScreen()));
+      } else {
+        // Check 'head' and 'owner' collections
+        DocumentSnapshot<Map<String, dynamic>> headSnapshot =
+            await FirebaseFirestore.instance
+                .collection('head')
+                .doc(user.uid)
+                .get();
+        DocumentSnapshot<Map<String, dynamic>> ownerSnapshot =
+            await FirebaseFirestore.instance
+                .collection('owner')
+                .doc(user.uid)
+                .get();
+
+        if (headSnapshot.exists) {
+          // User exists in 'head' collection
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => HeadHomeScreen()));
+        } else if (ownerSnapshot.exists) {
+          // User exists in 'owner' collection
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const OwnerHomeScreen()));
+        } else {
+          // User data not found
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const EmployeeHomeScreen()));
         }
       }
-    } catch (e) {
-      // Handle the error appropriately
-      print('Error retrieving user panel: $e');
+    } else {
+      // User is not authenticated
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => const OnboardScreen()));
     }
-
-    return panel;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(
-          color: Colors.black,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image(
+              image: AssetImage('assets/images/hrbg.png'),
+            ),
+            CircularProgressIndicator(
+              color: Colors.red,
+            ),
+          ],
         ),
       ),
     );
