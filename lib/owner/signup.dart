@@ -1,7 +1,8 @@
+// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/owner/home_page.dart';
 import 'package:hr_management_system/owner/login_page.dart';
@@ -39,9 +40,9 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Image.asset("assets/images/hrbg.png"),
                       height: 300,
                       width: 2000,
+                      child: Image.asset("assets/images/hrbg.png"),
                     ),
                   ],
                 ),
@@ -57,7 +58,7 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
             ),
             TextField(
               controller: nameContoller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Name",
                 hintText: "name",
                 enabledBorder: UnderlineInputBorder(
@@ -79,7 +80,7 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
             ),
             TextField(
               controller: phoneContoller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Phone Number",
                 hintText: "Phone Number",
                 enabledBorder: UnderlineInputBorder(
@@ -101,7 +102,7 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
             ),
             TextField(
               controller: emailContoller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Email",
                 hintText: "email",
                 enabledBorder: UnderlineInputBorder(
@@ -124,7 +125,7 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
             TextField(
               controller: passContoller,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Password",
                 hintText: "Password",
                 enabledBorder: UnderlineInputBorder(
@@ -254,7 +255,7 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
                         })
               });
     } catch (e) {
-      print('error' + e.toString());
+      print('error$e');
       Fluttertoast.showToast(msg: 'Accouunt creation failed');
     }
   }

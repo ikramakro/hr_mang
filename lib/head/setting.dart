@@ -1,8 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hr_management_system/progress.dart';
 import 'package:hr_management_system/splash.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -64,7 +65,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              signOut(context);
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Sign Out'),
+                    content: const Text('Do you want to sign out?'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Yes'),
+                        onPressed: () {
+                          signOut(context);
+                        },
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                        ),
+                        child: const Text('No'),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                          // Perform any actions for "No" response here
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
             },
             icon: const Icon(
               Icons.logout,
@@ -144,19 +174,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> signOut(BuildContext context) async {
     try {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return ProgressDialogue(
-              message: 'Signing Out',
-            );
-          });
+      // showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return ProgressDialogue(
+      //         message: 'Signing Out',
+      //       );
+      //     });
       await FirebaseAuth.instance.signOut();
       // ignore: use_build_context_synchronously
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => SplashScreen(),
+          builder: (context) => const SplashScreen(),
         ),
         (route) => false,
       );

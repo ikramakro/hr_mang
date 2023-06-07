@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hr_management_system/head/home_page.dart';
 
 class UserListScreen extends StatelessWidget {
+  const UserListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +77,7 @@ class UserListScreen extends StatelessWidget {
 class UserDetailScreen extends StatefulWidget {
   final DocumentSnapshot user;
 
-  const UserDetailScreen({required this.user});
+  const UserDetailScreen({super.key, required this.user});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -150,7 +152,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => HeadHomeScreen(),
+                builder: (_) => const HeadHomeScreen(),
               ),
             );
           },

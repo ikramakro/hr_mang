@@ -1,4 +1,4 @@
-import 'dart:math';
+// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,9 +42,9 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Image.asset("assets/images/hrbg.png"),
                       height: 300,
                       width: 2000,
+                      child: Image.asset("assets/images/hrbg.png"),
                     ),
                   ],
                 ),
@@ -247,7 +247,7 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => HeadHomeScreen(),
+                              builder: (_) => const HeadHomeScreen(),
                             ),
                           ),
                           Fluttertoast.showToast(
@@ -255,7 +255,7 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
                         })
               });
     } catch (e) {
-      print('error' + e.toString());
+      print('error$e');
       Fluttertoast.showToast(msg: 'Accouunt creation failed');
     }
   }

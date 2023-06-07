@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -82,9 +84,9 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        child: Image.asset("assets/images/hrbg.png"),
                         height: 300,
                         width: 2000,
+                        child: Image.asset("assets/images/hrbg.png"),
                       ),
                     ],
                   ),

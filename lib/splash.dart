@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +10,8 @@ import 'package:hr_management_system/onboard.dart';
 import 'package:hr_management_system/owner/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -56,8 +60,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
         if (headSnapshot.exists) {
           // User exists in 'head' collection
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => HeadHomeScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const HeadHomeScreen()));
         } else if (ownerSnapshot.exists) {
           // User exists in 'owner' collection
           Navigator.push(context,

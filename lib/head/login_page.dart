@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -47,7 +49,7 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => HeadHomeScreen(),
+          builder: (_) => const HeadHomeScreen(),
         ),
       );
       setState(() {
@@ -82,7 +84,7 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                         height: 300,
                         width: 2000,
                         child: Image.asset("assets/images/hrbg.png"),

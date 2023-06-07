@@ -1,8 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:hr_management_system/head/setting.dart';
 import 'package:hr_management_system/head/user_list.dart';
 
 class HeadHomeScreen extends StatefulWidget {
+  const HeadHomeScreen({super.key});
+
   @override
   _HeadHomeScreenState createState() => _HeadHomeScreenState();
 }
@@ -49,7 +53,7 @@ class _HeadHomeScreenState extends State<HeadHomeScreen> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return UserListScreen();
+        return const UserListScreen();
       case 1:
         return const ProfileScreen();
       default:

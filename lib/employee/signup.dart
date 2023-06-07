@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers
+// ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,9 +42,9 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Image.asset("assets/images/hrbg.png"),
                       height: 300,
                       width: 2000,
+                      child: Image.asset("assets/images/hrbg.png"),
                     ),
                   ],
                 ),
