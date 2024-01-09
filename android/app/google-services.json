@@ -1,36 +1,45 @@
 {
   "project_info": {
-    "project_number": "862559976732",
-    "project_id": "hr-management-system-2d49f",
-    "storage_bucket": "hr-management-system-2d49f.appspot.com"
+    "project_number": "613573288751",
+    "project_id": "task-app-b6a4a",
+    "storage_bucket": "task-app-b6a4a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:862559976732:android:44bb2fcebbf851b0408ed9",
+        "mobilesdk_app_id": "1:613573288751:android:c010c163837c6759d077da",
         "android_client_info": {
-          "package_name": "com.example.hr_management_system"
+          "package_name": "com.example.call_log"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "862559976732-thscqlepa0lncqjmcnfijj7qq7kmh0f3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCldRqP71JawzqaEKl6DAxBtEXnfmo9PZo"
+          "current_key": "AIzaSyDllGJfJ1oQdiuz-XOp0Y5tkvP_E_k84x0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "862559976732-thscqlepa0lncqjmcnfijj7qq7kmh0f3.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613573288751:android:e70f394a627c666dd077da",
+        "android_client_info": {
+          "package_name": "com.example.hr_management_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDllGJfJ1oQdiuz-XOp0Y5tkvP_E_k84x0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -245,7 +245,7 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const OwnerHomeScreen(),
+                              builder: (_) => OwnerHomeScreen(),
                             ),
                           ),
                           Fluttertoast.showToast(

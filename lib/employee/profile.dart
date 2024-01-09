@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hr_management_system/res/upload_cv.dart';
 import 'package:hr_management_system/splash.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -106,6 +107,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               size: 26,
             ),
           ),
+          TextButton(
+              onPressed: () {
+                getPdfAndUpload();
+              },
+              child: Text(
+                'Cv',
+                style: TextStyle(color: Colors.white),
+              ))
         ],
         automaticallyImplyLeading: false,
         title: const Text('Profile'),
@@ -180,6 +189,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: const TextStyle(fontSize: 16),
               ),
             ),
+            // Center(
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       getPdfAndUpload();
+            //     },
+            //     child: Container(
+            //       width: 100,
+            //       height: 100,
+            //       child: Center(
+            //         child: Text(
+            //           'Upload your CV',
+            //           style: TextStyle(
+            //               color: Colors.white,
+            //               fontSize: 10,
+            //               fontWeight: FontWeight.w500),
+            //         ),
+            //       ),
+            //       decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(30),
+            //           color: Colors.deepPurple),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

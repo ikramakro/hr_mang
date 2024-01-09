@@ -3,9 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hr_management_system/employee/mesasge.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 class TodayScreen extends StatefulWidget {
   const TodayScreen({Key? key}) : super(key: key);
@@ -23,12 +28,72 @@ class _TodayScreenState extends State<TodayScreen> {
   String? uid;
   String userName = '';
   bool hasCheckedIn = false;
+  String userid = '';
+  String username = '';
+  ZegoUIKitPrebuiltCallController? callController;
+
+  getuserDetail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userid = sharedPreferences.getString('userid1') ?? '1122';
+    username = sharedPreferences.getString('username1') ?? 'employee';
+    ZegoUIKitPrebuiltCallInvitationService().uninit();
+    callController ??= ZegoUIKitPrebuiltCallController();
+
+    /// 4/5. initialized ZegoUIKitPrebuiltCallInvitationService when account is logged in or re-logged in
+    ZegoUIKitPrebuiltCallInvitationService().init(
+      appID: 2002727599 /*input your AppID*/,
+      appSign:
+          "5bc06ed01eefd54688d73293b7ad35c05db2a750b3bfd974394f2c63695ef4fd" /*input your AppSign*/,
+      userID: userid,
+      userName: username,
+      notifyWhenAppRunningInBackgroundOrQuit: false,
+      plugins: [ZegoUIKitSignalingPlugin()],
+      controller: callController,
+      requireConfig: (ZegoCallInvitationData data) {
+        final config = (data.invitees.length > 1)
+            ? ZegoCallType.videoCall == data.type
+                ? ZegoUIKitPrebuiltCallConfig.groupVideoCall()
+                : ZegoUIKitPrebuiltCallConfig.groupVoiceCall()
+            : ZegoCallType.videoCall == data.type
+                ? ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+                : ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall();
+
+        // config.avatarBuilder = customAvatarBuilder;
+
+        /// support minimizing, show minimizing button
+        config.topMenuBarConfig.isVisible = true;
+        config.topMenuBarConfig.buttons
+            .insert(0, ZegoMenuBarButtonName.minimizingButton);
+
+        return config;
+      },
+    );
+  }
+
+  // Future loginCustomerChat() async {
+  //   await ZIMKit().connectUser(
+  //     id: userid,
+  //     name: username,
+  //     avatarUrl: "",
+  //   );
+  // }
 
   @override
   void initState() {
     super.initState();
     fetchUserName();
     getCurrentUserId();
+    getuserDetail();
+    // loginCustomerChat();
+  }
+
+  Future loginCustomerChat() async {
+    await ZIMKit().disconnectUser();
+    await ZIMKit().connectUser(
+      id: userid,
+      name: "Employee1",
+      avatarUrl: "",
+    );
   }
 
   Future<void> getCurrentUserId() async {
@@ -51,17 +116,44 @@ class _TodayScreenState extends State<TodayScreen> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(top: 32),
-              child: Text(
-                'Welcome',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontFamily: 'NexaRegular',
-                  fontSize: screenWidth / 20,
+            Row(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.only(top: 32),
+                  child: Text(
+                    'Welcome',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontFamily: 'NexaRegular',
+                      fontSize: screenWidth / 20,
+                    ),
+                  ),
                 ),
-              ),
+                IconButton(
+                  onPressed: () {
+                    //Fill in a String type value.
+                    loginCustomerChat().then((value) {
+                      //This will be triggered when login successful.
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const MessageScreen();
+                          },
+                        ),
+                      );
+                    });
+                    debugPrint(
+                      '=======12',
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.message_rounded,
+                  ),
+                ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(left: 24),

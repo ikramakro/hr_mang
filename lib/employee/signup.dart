@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/employee/home.dart';
 import 'package:hr_management_system/employee/login_page.dart';
 import 'package:hr_management_system/progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmployeeSignupPage extends StatefulWidget {
   const EmployeeSignupPage({super.key});
@@ -235,29 +236,34 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
       await auth
           .createUserWithEmailAndPassword(
               email: emailContoller.text, password: passContoller.text)
-          .then((signedInUser) => {
-                FirebaseFirestore.instance
-                    .collection('employees')
-                    .doc(signedInUser.user!.uid)
-                    .set({
-                  'name': nameContoller.text,
-                  'phonenumber': phoneContoller.text,
-                  'email': emailContoller.text,
-                  'password': passContoller.text,
-                  'duration': durationContoller.text,
-                  'salary': salaryContoller.text,
-                }).then((signedInUser) => {
-                          print('Succes'),
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const EmployeeHomeScreen(),
-                            ),
-                          ),
-                          Fluttertoast.showToast(
-                              msg: "Account created Successfully"),
-                        })
-              });
+          .then((signedInUser) async {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setString('userid1', signedInUser.user!.uid);
+
+        sharedPreferences.setString('username1', signedInUser.user!.email!);
+        FirebaseFirestore.instance
+            .collection('employees')
+            .doc(signedInUser.user!.uid)
+            .set({
+          'uid': signedInUser.user!.uid,
+          'name': nameContoller.text,
+          'phonenumber': phoneContoller.text,
+          'email': emailContoller.text,
+          'password': passContoller.text,
+          'duration': durationContoller.text,
+          'salary': salaryContoller.text,
+        }).then((signedInUser) => {
+                  print('Succes'),
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const EmployeeHomeScreen(),
+                    ),
+                  ),
+                  Fluttertoast.showToast(msg: "Account created Successfully"),
+                });
+      });
     } catch (e) {
       Fluttertoast.showToast(msg: 'Account creation failed');
     }

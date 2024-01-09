@@ -1,23 +1,94 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hr_management_system/head/call_page.dart';
+import 'package:hr_management_system/head/chat_screen.dart';
 import 'package:hr_management_system/head/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
-class UserListScreen extends StatelessWidget {
-  const UserListScreen({super.key});
+class UserListScreen extends StatefulWidget {
+  UserListScreen({super.key});
+
+  @override
+  State<UserListScreen> createState() => _UserListScreenState();
+}
+
+class _UserListScreenState extends State<UserListScreen> {
+  String userid = '';
+  String username = '';
+  ZegoUIKitPrebuiltCallController? callController;
+  @override
+  void initState() {
+    super.initState();
+    getuserDetail();
+  }
+
+  getuserDetail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userid = sharedPreferences.getString('userid')!;
+
+    username = sharedPreferences.getString('username')!;
+    await loginuserforcall();
+    await loginCustomerChat();
+  }
+
+  Future loginCustomerChat() async {
+    await ZIMKit().disconnectUser();
+    await ZIMKit().connectUser(
+      id: userid,
+      name: "Head",
+      avatarUrl: "",
+    );
+// ZIMKit().init(appID: appID)
+    // totalUnreadMessages = ZIMKit().getTotalUnreadMessageCount().value;
+    // if (kDebugMode) {
+    //   print(totalUnreadMessages);
+    // }
+  }
+
+  Future loginuserforcall() async {
+    callController ??= ZegoUIKitPrebuiltCallController();
+    ZegoUIKitPrebuiltCallInvitationService().uninit();
+
+    /// 4/5. initialized ZegoUIKitPrebuiltCallInvitationService when account is logged in or re-logged in
+    ZegoUIKitPrebuiltCallInvitationService().init(
+      appID: 2002727599 /*input your AppID*/,
+      appSign:
+          "5bc06ed01eefd54688d73293b7ad35c05db2a750b3bfd974394f2c63695ef4fd" /*input your AppSign*/,
+      userID: userid,
+      userName: username,
+      notifyWhenAppRunningInBackgroundOrQuit: false,
+      plugins: [ZegoUIKitSignalingPlugin()],
+      controller: callController,
+      requireConfig: (ZegoCallInvitationData data) {
+        final config = (data.invitees.length > 1)
+            ? ZegoCallType.videoCall == data.type
+                ? ZegoUIKitPrebuiltCallConfig.groupVideoCall()
+                : ZegoUIKitPrebuiltCallConfig.groupVoiceCall()
+            : ZegoCallType.videoCall == data.type
+                ? ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+                : ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall();
+
+        // config.avatarBuilder = customAvatarBuilder;
+
+        /// support minimizing, show minimizing button
+        config.topMenuBarConfig.isVisible = true;
+        config.topMenuBarConfig.buttons
+            .insert(0, ZegoMenuBarButtonName.minimizingButton);
+
+        return config;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.message_rounded,
-            ),
-          ),
-        ],
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             color: Colors.red,
@@ -44,6 +115,7 @@ class UserListScreen extends StatelessWidget {
             itemCount: users.length,
             itemBuilder: (context, index) {
               final user = users[index];
+              final id = user['uid'];
               final name = user['name'];
               final email = user['email'];
               final phonenumber = user['phonenumber'];
@@ -56,7 +128,119 @@ class UserListScreen extends StatelessWidget {
                 ),
                 title: Text(name),
                 subtitle: Text(email),
-                trailing: Text(phonenumber),
+                trailing: SizedBox(
+                  width: 100,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: IconButton(
+                          onPressed: () {
+                            //Fill in a String type value.
+                            loginCustomerChat().then((value) {
+                              //This will be triggered when login successful.
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return CustomerChatScreen(
+                                      id: id,
+                                      logo: 'assets/images/hrbg.png',
+                                      name: name,
+                                    );
+                                  },
+                                ),
+                              );
+                            });
+                            debugPrint(
+                              '=======12',
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.message_rounded,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ZegoSendCallInvitationButton(
+                          iconSize: const Size(20, 30),
+                          // buttonSize: const Size(20, 20),
+                          icon: ButtonIcon(
+                            icon: const Icon(
+                              Icons.call,
+                            ),
+                          ),
+                          isVideoCall: false,
+                          resourceID: 'zegouikit_call',
+                          invitees: [
+                            ZegoUIKitUser(
+                              id: id,
+                              name: name,
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Expanded(
+                      //   child: IconButton(
+                      //     onPressed: () {
+                      //       loginuserforcall().then((value) {
+                      //         //This will be triggered when login successful.
+
+                      //         Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //             builder: (context) {
+                      //               return CallPage(
+                      //                 callID: 'khsd',
+                      //                 userId: id,
+                      //                 userName: name,
+                      //               );
+                      //             },
+                      //           ),
+                      //         );
+                      //       });
+                      //       debugPrint(
+                      //         '=======12',
+                      //       );
+                      //     },
+                      //     icon: const Icon(
+                      //       Icons.call,
+                      //     ),
+                      //   ),
+                      // ),
+                      Expanded(
+                        child: ZegoSendCallInvitationButton(
+                          // iconSize: const Size(10, 10),
+                          // buttonSize: const Size(10, 10),
+                          iconSize: const Size(20, 30),
+                          icon: ButtonIcon(
+                            icon: const Icon(
+                              Icons.video_call,
+                            ),
+                          ),
+                          isVideoCall: true,
+                          resourceID: 'zegouikit_call',
+                          invitees: [
+                            ZegoUIKitUser(
+                              id: id,
+                              name: name,
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Expanded(
+                      //   child: IconButton(
+                      //     onPressed: () {
+                      //       print('video call');
+                      //     },
+                      //     icon: const Icon(
+                      //       Icons.video_call,
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
                 onTap: () {
                   Navigator.push(
                     context,

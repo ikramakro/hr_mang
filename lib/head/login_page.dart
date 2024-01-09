@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/head/home_page.dart';
 import 'package:hr_management_system/head/signup_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../progress.dart';
 
@@ -30,7 +31,7 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
     passwordController.dispose();
   }
 
-  void login() {
+  void login() async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -45,7 +46,12 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
         .signInWithEmailAndPassword(
             email: emailController.text,
             password: passwordController.text.toString())
-        .then((value) {
+        .then((value) async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      sharedPreferences.setString('userid', value.user!.uid);
+
+      sharedPreferences.setString('username', value.user!.email!);
       Navigator.push(
         context,
         MaterialPageRoute(

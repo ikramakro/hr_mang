@@ -6,6 +6,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/employee/home.dart';
 import 'package:hr_management_system/employee/signup.dart';
 import 'package:hr_management_system/progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
@@ -29,7 +33,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     passwordController.dispose();
   }
 
-  void login() {
+  login() async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -44,7 +48,18 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
         .signInWithEmailAndPassword(
             email: emailController.text,
             password: passwordController.text.toString())
-        .then((value) {
+        .then((value) async {
+      // await ZIMKit().connectUser(
+      //   id: value.user!.uid,
+      //   name: value.user!.email!,
+      //   avatarUrl: "",
+      // );
+
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      sharedPreferences.setString('userid1', value.user!.uid);
+
+      sharedPreferences.setString('username1', value.user!.email!);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -190,9 +205,9 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () {
+                    onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        login();
+                        await login();
                       }
                     },
                     borderRadius: BorderRadius.circular(30),

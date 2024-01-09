@@ -64,8 +64,8 @@ class _SplashScreenState extends State<SplashScreen> {
               MaterialPageRoute(builder: (_) => const HeadHomeScreen()));
         } else if (ownerSnapshot.exists) {
           // User exists in 'owner' collection
-          Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const OwnerHomeScreen()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => OwnerHomeScreen()));
         } else {
           // User data not found
           Navigator.push(context,

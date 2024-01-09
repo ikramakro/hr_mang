@@ -238,6 +238,7 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
                     .collection('head')
                     .doc(signedInUser.user!.uid)
                     .set({
+                  "uid": signedInUser.user!.uid,
                   'name': nameContoller.text,
                   'phonenumber': phoneContoller.text,
                   'email': emailContoller.text,

@@ -45,6 +45,13 @@ dependencies:
   intl: ^0.18.1
   image_picker: ^0.8.7+5
   flutter_native_splash: ^2.3.1
+  zego_express_engine: ^3.6.1
+  zego_uikit_signaling_plugin: ^2.2.0
+  zego_uikit_prebuilt_call: ^3.10.4
+  zego_zimkit: ^1.14.0
+  cached_network_image: ^3.3.1
+  shared_preferences: ^2.2.2
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:
