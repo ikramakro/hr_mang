@@ -17,10 +17,10 @@ main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-  ZegoUIKitPrebuiltCallInvitationService().uninit();
+  
   ZIMKit().init(
-    appID: 2002727599,
-    appSign: '5bc06ed01eefd54688d73293b7ad35c05db2a750b3bfd974394f2c63695ef4fd',
+    appID: 2036562534,
+    appSign: '04fe16b9bea50d4db2110047374665a531304dd32e6be171f844af62a7304d13',
   );
 
   ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);

@@ -8,14 +8,14 @@ import 'package:hr_management_system/splash.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class DCProfileScreen extends StatefulWidget {
+  const DCProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<DCProfileScreen> createState() => _DCProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _DCProfileScreenState extends State<DCProfileScreen> {
   String? uid;
   late Stream<DocumentSnapshot<Map<String, dynamic>>> userDataStream;
   String userName = '';
@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Future<void> fetchUserData() async {
   //   try {
   //     final DocumentSnapshot<Map<String, dynamic>> snapshot =
-  //         await FirebaseFirestore.instance.collection('head').doc(uid).get();
+  //         await FirebaseFirestore.instance.collection('DC').doc(uid).get();
 
   //     final Map<String, dynamic>? userData = snapshot.data();
 
@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         uid = user.uid;
       });
       userDataStream =
-          FirebaseFirestore.instance.collection('head').doc(uid).snapshots();
+          FirebaseFirestore.instance.collection('DC').doc(uid).snapshots();
 
       // Note: This will call fetchUserData() automatically when data changes
     }

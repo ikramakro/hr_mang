@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hr_management_system/DC/login_page.dart';
 import 'package:hr_management_system/employee/login_page.dart';
 import 'package:hr_management_system/head/login_page.dart';
 import 'package:hr_management_system/owner/login_page.dart';
@@ -86,6 +87,37 @@ class _OnboardScreenState extends State<OnboardScreen> {
                 child: const Center(
                   child: Text(
                     'Head',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      textBaseline: TextBaseline.alphabetic,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            12.heightBox,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const DCHeadLoginPage(),
+                  ),
+                );
+              },
+              child: Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Center(
+                  child: Text(
+                    'D.C',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,

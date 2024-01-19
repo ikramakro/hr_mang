@@ -4,21 +4,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hr_management_system/DC/home_page.dart';
+import 'package:hr_management_system/DC/login_page.dart';
 import 'package:hr_management_system/head/home_page.dart';
 import 'package:hr_management_system/head/login_page.dart';
+import 'package:hr_management_system/head/signup_page.dart';
 import 'package:hr_management_system/owner/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../progress.dart';
 
-class HeadSignupPage extends StatefulWidget {
-  const HeadSignupPage({super.key});
+class DCHeadSignupPage extends StatefulWidget {
+  const DCHeadSignupPage({super.key});
 
   @override
-  State<HeadSignupPage> createState() => _HeadSignupPageState();
+  State<DCHeadSignupPage> createState() => _DCHeadSignupPageState();
 }
 
-class _HeadSignupPageState extends State<HeadSignupPage> {
+class _DCHeadSignupPageState extends State<DCHeadSignupPage> {
   TextEditingController nameContoller = TextEditingController();
   TextEditingController phoneContoller = TextEditingController();
   TextEditingController emailContoller = TextEditingController();
@@ -218,7 +221,7 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
             TextButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const HeadLoginPage()));
+                    MaterialPageRoute(builder: (_) => const DCHeadLoginPage()));
               },
               child: const Text(
                 "Already login? Log In Here",
@@ -252,13 +255,14 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
           .then((signedInUser) async {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        sharedPreferences.setString('userid', signedInUser.user!.uid);
+        sharedPreferences.setString('userid12', signedInUser.user!.uid);
 
-        sharedPreferences.setString('username', signedInUser.user!.email!);
+        sharedPreferences.setString('username12', signedInUser.user!.email!);
         FirebaseFirestore.instance
-            .collection('head')
+            .collection('DC')
             .doc(signedInUser.user!.uid)
             .set({
+          "role": 'DC',
           "uid": signedInUser.user!.uid,
           'name': nameContoller.text,
           'phonenumber': phoneContoller.text,
@@ -269,7 +273,7 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const HeadHomeScreen(),
+                      builder: (_) => const DCHeadHomeScreen(),
                     ),
                   ),
                   Fluttertoast.showToast(msg: "Account created Successfully"),
@@ -280,9 +284,4 @@ class _HeadSignupPageState extends State<HeadSignupPage> {
       Fluttertoast.showToast(msg: 'Accouunt creation failed');
     }
   }
-}
-
-bool isAlpha(String input) {
-  // This function checks if the input contains only alphabets
-  return RegExp(r'^[a-zA-Z ]+$').hasMatch(input);
 }

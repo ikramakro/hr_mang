@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/owner/home_page.dart';
 import 'package:hr_management_system/owner/signup.dart';
 import 'package:hr_management_system/progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OwnerLoginPage extends StatefulWidget {
   const OwnerLoginPage({Key? key}) : super(key: key);
@@ -44,7 +45,12 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
       email: emailController.text,
       password: passwordController.text,
     )
-        .then((value) {
+        .then((value) async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      sharedPreferences.setString('aduserid', value.user!.uid);
+
+      sharedPreferences.setString('adusername', value.user!.email!);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -55,7 +61,7 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
         loading = false;
       });
     }).catchError((error) {
-      Fluttertoast.showToast(msg: 'Error in login');
+      Fluttertoast.showToast(msg: 'User not found');
       setState(() {
         loading = false;
       });
@@ -148,21 +154,21 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 220,
-                  ),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: const Text(
-                      'Forget Password?',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(
+                //     left: 220,
+                //   ),
+                //   child: GestureDetector(
+                //     onTap: () {},
+                //     child: const Text(
+                //       'Forget Password?',
+                //       style: TextStyle(
+                //         color: Colors.black,
+                //         fontWeight: FontWeight.w500,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 10,
                 ),

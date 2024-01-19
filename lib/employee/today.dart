@@ -36,7 +36,6 @@ class _TodayScreenState extends State<TodayScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     userid = sharedPreferences.getString('userid1') ?? '1122';
     username = sharedPreferences.getString('username1') ?? 'employee';
-    ZegoUIKitPrebuiltCallInvitationService().uninit();
     callController ??= ZegoUIKitPrebuiltCallController();
 
     /// 4/5. initialized ZegoUIKitPrebuiltCallInvitationService when account is logged in or re-logged in
@@ -46,7 +45,7 @@ class _TodayScreenState extends State<TodayScreen> {
           "5bc06ed01eefd54688d73293b7ad35c05db2a750b3bfd974394f2c63695ef4fd" /*input your AppSign*/,
       userID: userid,
       userName: username,
-      notifyWhenAppRunningInBackgroundOrQuit: false,
+      notifyWhenAppRunningInBackgroundOrQuit: true,
       plugins: [ZegoUIKitSignalingPlugin()],
       controller: callController,
       requireConfig: (ZegoCallInvitationData data) {
@@ -117,6 +116,7 @@ class _TodayScreenState extends State<TodayScreen> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   alignment: Alignment.centerLeft,

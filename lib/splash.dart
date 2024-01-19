@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hr_management_system/DC/home_page.dart';
 import 'package:hr_management_system/employee/home.dart';
 import 'package:hr_management_system/head/home_page.dart';
 import 'package:hr_management_system/onboard.dart';
@@ -57,7 +58,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 .collection('owner')
                 .doc(user.uid)
                 .get();
-
+        DocumentSnapshot<Map<String, dynamic>> DcSnapshot =
+            await FirebaseFirestore.instance
+                .collection('DC')
+                .doc(user.uid)
+                .get();
         if (headSnapshot.exists) {
           // User exists in 'head' collection
           Navigator.push(context,
@@ -66,6 +71,10 @@ class _SplashScreenState extends State<SplashScreen> {
           // User exists in 'owner' collection
           Navigator.push(
               context, MaterialPageRoute(builder: (_) => OwnerHomeScreen()));
+        } else if (DcSnapshot.exists) {
+          // User exists in 'owner' collection
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => DCHeadHomeScreen()));
         } else {
           // User data not found
           Navigator.push(context,

@@ -1,23 +1,23 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hr_management_system/head/call_page.dart';
 import 'package:hr_management_system/head/chat_screen.dart';
+import 'package:hr_management_system/DC/home_page.dart';
+import 'package:hr_management_system/employee/mesasge.dart';
+import 'package:hr_management_system/head/call_page.dart';
 import 'package:hr_management_system/head/home_page.dart';
-import 'package:hr_management_system/head/message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-class UserListScreen extends StatefulWidget {
-  UserListScreen({super.key});
+class DCUserListScreen extends StatefulWidget {
+  DCUserListScreen({super.key});
 
   @override
-  State<UserListScreen> createState() => _UserListScreenState();
+  State<DCUserListScreen> createState() => _DCUserListScreenState();
 }
 
-class _UserListScreenState extends State<UserListScreen> {
+class _DCUserListScreenState extends State<DCUserListScreen> {
   String userid = '';
   String username = '';
   ZegoUIKitPrebuiltCallController? callController;
@@ -29,9 +29,9 @@ class _UserListScreenState extends State<UserListScreen> {
 
   getuserDetail() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    userid = sharedPreferences.getString('userid')!;
+    userid = sharedPreferences.getString('userid12')!;
 
-    username = sharedPreferences.getString('username')!;
+    username = sharedPreferences.getString('username12')!;
     await loginuserforcall();
     await loginCustomerChat();
   }
@@ -39,7 +39,7 @@ class _UserListScreenState extends State<UserListScreen> {
   Future loginCustomerChat() async {
     await ZIMKit().connectUser(
       id: userid,
-      name: "Head",
+      name: "DC",
       avatarUrl: "",
     );
 // ZIMKit().init(appID: appID)
@@ -60,7 +60,7 @@ class _UserListScreenState extends State<UserListScreen> {
           "5bc06ed01eefd54688d73293b7ad35c05db2a750b3bfd974394f2c63695ef4fd" /*input your AppSign*/,
       userID: userid,
       userName: username,
-      notifyWhenAppRunningInBackgroundOrQuit: true,
+      notifyWhenAppRunningInBackgroundOrQuit: false,
       plugins: [ZegoUIKitSignalingPlugin()],
       controller: callController,
       requireConfig: (ZegoCallInvitationData data) {
@@ -96,7 +96,6 @@ class _UserListScreenState extends State<UserListScreen> {
         ),
         backgroundColor: Colors.red,
         automaticallyImplyLeading: false,
-        title: const Text('User List'),
         actions: [
           IconButton(
             onPressed: () {
@@ -158,9 +157,10 @@ class _UserListScreenState extends State<UserListScreen> {
             ),
           ),
         ],
+        title: const Text('Head List'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('employees').snapshots(),
+        stream: FirebaseFirestore.instance.collection('head').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -246,6 +246,7 @@ class _UserListScreenState extends State<UserListScreen> {
                       //     onPressed: () {
                       //       loginuserforcall().then((value) {
                       //         //This will be triggered when login successful.
+
                       //         Navigator.push(
                       //           context,
                       //           MaterialPageRoute(
@@ -305,7 +306,7 @@ class _UserListScreenState extends State<UserListScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UserDetailScreen(user: user),
+                      builder: (context) => DCUserDetailScreen(user: user),
                     ),
                   );
                 },
@@ -318,20 +319,20 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 }
 
-class UserDetailScreen extends StatefulWidget {
+class DCUserDetailScreen extends StatefulWidget {
   final DocumentSnapshot user;
 
-  const UserDetailScreen({super.key, required this.user});
+  const DCUserDetailScreen({super.key, required this.user});
 
   @override
   // ignore: library_private_types_in_public_api
-  _UserDetailScreenState createState() => _UserDetailScreenState();
+  _DCUserDetailScreenState createState() => _DCUserDetailScreenState();
 }
 
-class _UserDetailScreenState extends State<UserDetailScreen> {
+class _DCUserDetailScreenState extends State<DCUserDetailScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _durationController = TextEditingController();
+  // final TextEditingController _durationController = TextEditingController();
   final TextEditingController _salaryController = TextEditingController();
 
   @override
@@ -339,34 +340,34 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     super.initState();
     _nameController.text = widget.user['name'];
     _emailController.text = widget.user['email'];
-    _durationController.text = widget.user['duration'] ?? '';
-    _salaryController.text = widget.user['salary'] ?? '';
+    // _durationController.text = widget.user['duration'] ?? '';
+    _salaryController.text = widget.user['phonenumber'] ?? '';
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
-    _durationController.dispose();
-    _salaryController.dispose();
+    // _durationController.dispose();
+    // _salaryController.dispose();
     super.dispose();
   }
 
   void _saveChanges() async {
     final updatedName = _nameController.text;
     final updatedEmail = _emailController.text;
-    final updatedDuration = _durationController.text;
+    // final updatedDuration = _durationController.text;
     final updatedSalary = _salaryController.text;
 
     try {
       await FirebaseFirestore.instance
-          .collection('employees')
+          .collection('DC')
           .doc(widget.user.id)
           .update({
         'name': updatedName,
         'email': updatedEmail,
-        'duration': updatedDuration,
-        'salary': updatedSalary,
+        // 'duration': updatedDuration,
+        'phonenumber': updatedSalary,
       });
 
       // ignore: use_build_context_synchronously
@@ -396,7 +397,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => HeadHomeScreen(),
+                builder: (_) => DCHeadHomeScreen(),
               ),
             );
           },
@@ -406,7 +407,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
             size: 30,
           ),
         ),
-        title: const Text('User Detail'),
+        title: const Text('Head Detail'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -423,15 +424,15 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _durationController,
-              decoration:
-                  const InputDecoration(labelText: 'Duration of Employee'),
-            ),
+            // TextFormField(
+            //   controller: _durationController,
+            //   decoration:
+            //       const InputDecoration(labelText: 'Duration of Employee'),
+            // ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _salaryController,
-              decoration: const InputDecoration(labelText: 'Salary'),
+              decoration: const InputDecoration(labelText: 'Phone number'),
             ),
             const SizedBox(height: 16),
             Padding(

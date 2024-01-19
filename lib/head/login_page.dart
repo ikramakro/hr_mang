@@ -62,7 +62,7 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
         loading = false;
       });
     }).onError((error, stackTrace) {
-      Fluttertoast.showToast(msg: 'Error in login');
+      Fluttertoast.showToast(msg: 'User not found');
       setState(() {
         loading = false;
       });
@@ -156,21 +156,21 @@ class _HeadLoginPageState extends State<HeadLoginPage> {
             const SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 220,
-              ),
-              child: GestureDetector(
-                onTap: () {},
-                child: const Text(
-                  'Forget Password?',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //     left: 220,
+            //   ),
+            //   child: GestureDetector(
+            //     onTap: () {},
+            //     child: const Text(
+            //       'Forget Password?',
+            //       style: TextStyle(
+            //         color: Colors.black,
+            //         fontWeight: FontWeight.w500,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(
               height: 10,
             ),

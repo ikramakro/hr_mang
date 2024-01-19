@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
-class CallPage extends StatelessWidget {
-  const CallPage(
-      {super.key,
-      required this.callID,
-      required this.userId,
-      required this.userName,
-      required this.isvideo});
+class DCCallPage extends StatelessWidget {
+  const DCCallPage({
+    super.key,
+    required this.callID,
+    required this.userId,
+    required this.userName,
+  });
   final String callID;
   final String userName;
   final String userId;
-  final bool isvideo;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,6 @@ class CallPage extends StatelessWidget {
         callID: callID,
 
         // You can also use groupVideo/groupVoice/oneOnOneVoice to make more types of calls.
-        config: isvideo
-            ? ZegoUIKitPrebuiltCallConfig.groupVideoCall()
-            : ZegoUIKitPrebuiltCallConfig.groupVoiceCall());
+        config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall());
   }
 }

@@ -6,11 +6,11 @@ import 'package:intl/intl.dart';
 
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-class CustomerChatScreen extends StatelessWidget {
+class DCCustomerChatScreen extends StatelessWidget {
   final String id;
   final String logo;
   final String name;
-  const CustomerChatScreen(
+  const DCCustomerChatScreen(
       {super.key, required this.name, required this.logo, required this.id});
 
   @override
@@ -277,14 +277,13 @@ class CustomerChatScreen extends StatelessWidget {
               const SizedBox(
                 width: 20,
               ),
-              Text(
-                name,
-                // style: HelperStyle.textStyle(
-                //   PsColors.blackColor,
-                //   14.sp,
-                //   FontWeight.w500,
-                // ),
-              ),
+              Text(name, style: const TextStyle(color: Colors.black)
+                  // style: HelperStyle.textStyle(
+                  //   PsColors.blackColor,
+                  //   14.sp,
+                  //   FontWeight.w500,
+                  // ),
+                  ),
             ],
           ),
         );
@@ -528,4 +527,9 @@ class MessageTextContent extends StatelessWidget {
       ],
     );
   }
+}
+
+String _formatDateTime(DateTime dateTime) {
+  // Use the intl package to format the date and time
+  return DateFormat('HH:mm a').format(dateTime);
 }

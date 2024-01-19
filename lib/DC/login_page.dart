@@ -3,22 +3,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hr_management_system/employee/home.dart';
-import 'package:hr_management_system/employee/signup.dart';
-import 'package:hr_management_system/progress.dart';
+import 'package:hr_management_system/DC/home_page.dart';
+import 'package:hr_management_system/DC/signup_page.dart';
+import 'package:hr_management_system/head/home_page.dart';
+import 'package:hr_management_system/head/signup_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
-import 'package:zego_zimkit/zego_zimkit.dart';
 
-class EmployeeLoginPage extends StatefulWidget {
-  const EmployeeLoginPage({super.key});
+import '../progress.dart';
+
+class DCHeadLoginPage extends StatefulWidget {
+  const DCHeadLoginPage({super.key});
 
   @override
-  State<EmployeeLoginPage> createState() => _EmployeeLoginPageState();
+  State<DCHeadLoginPage> createState() => _DCHeadLoginPageState();
 }
 
-class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
+class _DCHeadLoginPageState extends State<DCHeadLoginPage> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -33,7 +33,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     passwordController.dispose();
   }
 
-  login() async {
+  void login() async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -49,24 +49,17 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
             email: emailController.text,
             password: passwordController.text.toString())
         .then((value) async {
-      // await ZIMKit().connectUser(
-      //   id: value.user!.uid,
-      //   name: value.user!.email!,
-      //   avatarUrl: "",
-      // );
-
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      sharedPreferences.setString('userid1', value.user!.uid);
+      sharedPreferences.setString('userid12', value.user!.uid);
 
-      sharedPreferences.setString('username1', value.user!.email!);
+      sharedPreferences.setString('username12', value.user!.email!);
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => const EmployeeHomeScreen(),
+          builder: (_) => const DCHeadHomeScreen(),
         ),
       );
-      Fluttertoast.showToast(msg: 'Login Sucessfully');
       setState(() {
         loading = false;
       });
@@ -99,8 +92,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // ignore: sized_box_for_whitespace
-                      Container(
+                      SizedBox(
                         height: 300,
                         width: 2000,
                         child: Image.asset("assets/images/hrbg.png"),
@@ -205,9 +197,9 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () async {
+                    onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        await login();
+                        login();
                       }
                     },
                     borderRadius: BorderRadius.circular(30),
@@ -230,7 +222,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const EmployeeSignupPage(),
+                    builder: (_) => const DCHeadSignupPage(),
                   ),
                 );
               },

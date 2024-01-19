@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hr_management_system/employee/home.dart';
 import 'package:hr_management_system/employee/login_page.dart';
+import 'package:hr_management_system/head/signup_page.dart';
+import 'package:hr_management_system/owner/signup.dart';
 import 'package:hr_management_system/progress.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -83,6 +85,7 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
             ),
             TextField(
               controller: phoneContoller,
+              maxLength: 11,
               decoration: const InputDecoration(
                 labelText: "Phone Number",
                 hintText: "Phone Number",
@@ -173,14 +176,27 @@ class _EmployeeSignupPageState extends State<EmployeeSignupPage> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
+                      RegExp numericRegExp = RegExp(r'^[0-9]+$');
                       if (nameContoller.text.length < 4) {
                         Fluttertoast.showToast(
                             msg: 'Name must br atleast 4 characters');
+                      } else if (!isAlpha(nameContoller.text.trim())) {
+                        Fluttertoast.showToast(
+                            msg: 'Name must contain only alphabets');
+                      } else if (!numericRegExp.hasMatch(phoneContoller.text)) {
+                        Fluttertoast.showToast(
+                            msg: 'Please enter a valid numeric phone number');
                       } else if (phoneContoller.text.length < 11) {
                         Fluttertoast.showToast(
                             msg: 'Number must be atleast 11 numbers');
                       } else if (!emailContoller.text.contains("@")) {
                         Fluttertoast.showToast(msg: 'Email is not valid');
+                      } else if (!strongPasswordRegExp
+                          .hasMatch(passContoller.text)) {
+                        Fluttertoast.showToast(
+                          msg:
+                              'Please enter a strong password with at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character',
+                        );
                       } else {
                         registerEmployee();
                       }

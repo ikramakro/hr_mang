@@ -4,9 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hr_management_system/head/signup_page.dart';
 import 'package:hr_management_system/owner/home_page.dart';
 import 'package:hr_management_system/owner/login_page.dart';
 import 'package:hr_management_system/progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnwerSignupPage extends StatefulWidget {
   const OnwerSignupPage({super.key});
@@ -99,6 +101,7 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
                 ),
               ),
               keyboardType: TextInputType.number,
+              maxLength: 11,
             ),
             TextField(
               controller: emailContoller,
@@ -170,14 +173,33 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
+                      RegExp numericRegExp = RegExp(r'^[0-9]+$');
                       if (nameContoller.text.length < 4) {
                         Fluttertoast.showToast(
-                            msg: 'Name must br atleast 4 characters');
+                          msg: 'Name must be at least 4 characters',
+                        );
+                      } else if (!isAlpha(nameContoller.text.trim())) {
+                        Fluttertoast.showToast(
+                          msg: 'Name must contain only alphabets',
+                        );
+                      } else if (!numericRegExp.hasMatch(phoneContoller.text)) {
+                        Fluttertoast.showToast(
+                          msg: 'Please enter a valid numeric phone number',
+                        );
                       } else if (phoneContoller.text.length < 11) {
                         Fluttertoast.showToast(
-                            msg: 'Number must br atleast 11 numbers');
+                          msg: 'Number must be at least 11 numbers',
+                        );
                       } else if (!emailContoller.text.contains("@")) {
-                        Fluttertoast.showToast(msg: 'Email is not valid');
+                        Fluttertoast.showToast(
+                          msg: 'Email is not valid',
+                        );
+                      } else if (!strongPasswordRegExp
+                          .hasMatch(passContoller.text)) {
+                        Fluttertoast.showToast(
+                          msg:
+                              'Please enter a strong password with at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character',
+                        );
                       } else {
                         registerOwner();
                       }
@@ -231,32 +253,41 @@ class _OnwerSignupPageState extends State<OnwerSignupPage> {
       await auth
           .createUserWithEmailAndPassword(
               email: emailContoller.text, password: passContoller.text)
-          .then((signedInUser) => {
-                FirebaseFirestore.instance
-                    .collection('owner')
-                    .doc(signedInUser.user!.uid)
-                    .set({
-                  'name': nameContoller.text,
-                  'phonenumber': phoneContoller.text,
-                  'email': emailContoller.text,
-                  'password': passContoller.text,
-                }).then((signedInUser) => {
-                          print('Success'),
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => OwnerHomeScreen(),
-                            ),
-                          ),
-                          Fluttertoast.showToast(
-                            msg: "Account created Successfully",
-                            textColor: Colors.white,
-                          ),
-                        })
-              });
+          .then((signedInUser) async {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setString('aduserid', signedInUser.user!.uid);
+
+        sharedPreferences.setString('adusername', signedInUser.user!.email!);
+        FirebaseFirestore.instance
+            .collection('owner')
+            .doc(signedInUser.user!.uid)
+            .set({
+          'name': nameContoller.text,
+          'phonenumber': phoneContoller.text,
+          'email': emailContoller.text,
+          'password': passContoller.text,
+        }).then((signedInUser) => {
+                  print('Success'),
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => OwnerHomeScreen(),
+                    ),
+                  ),
+                  Fluttertoast.showToast(
+                    msg: "Account created Successfully",
+                    textColor: Colors.white,
+                  ),
+                });
+      });
     } catch (e) {
       print('error$e');
       Fluttertoast.showToast(msg: 'Accouunt creation failed');
     }
   }
 }
+
+RegExp strongPasswordRegExp = RegExp(
+  r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%^&*(),.?":{}|<>]).{8,}$',
+);

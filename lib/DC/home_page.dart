@@ -1,18 +1,20 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:hr_management_system/DC/setting.dart';
+import 'package:hr_management_system/DC/user_list.dart';
 import 'package:hr_management_system/head/cv_list.dart';
 import 'package:hr_management_system/head/setting.dart';
 import 'package:hr_management_system/head/user_list.dart';
 
-class HeadHomeScreen extends StatefulWidget {
-  const HeadHomeScreen({super.key});
+class DCHeadHomeScreen extends StatefulWidget {
+  const DCHeadHomeScreen({super.key});
 
   @override
-  _HeadHomeScreenState createState() => _HeadHomeScreenState();
+  _DCHeadHomeScreenState createState() => _DCHeadHomeScreenState();
 }
 
-class _HeadHomeScreenState extends State<HeadHomeScreen> {
+class _DCHeadHomeScreenState extends State<DCHeadHomeScreen> {
   int _currentIndex = 0;
 
   @override
@@ -46,10 +48,10 @@ class _HeadHomeScreenState extends State<HeadHomeScreen> {
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Cv List',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.book),
+          //   label: 'Cv List',
+          // ),
         ],
       ),
     );
@@ -58,11 +60,11 @@ class _HeadHomeScreenState extends State<HeadHomeScreen> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return UserListScreen();
+        return DCUserListScreen();
       case 1:
-        return const ProfileScreen();
-      case 2:
-        return const CvScreen();
+        return const DCProfileScreen();
+      // case 2:
+      //   return const CvScreen();
       default:
         return Container();
     }
