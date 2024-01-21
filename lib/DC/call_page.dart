@@ -16,9 +16,9 @@ class DCCallPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ZegoUIKitPrebuiltCall(
         appID:
-            2002727599, // Fill in the appID that you get from ZEGOCLOUD Admin Console.
+            605501723, // Fill in the appID that you get from ZEGOCLOUD Admin Console.
         appSign:
-            '5bc06ed01eefd54688d73293b7ad35c05db2a750b3bfd974394f2c63695ef4fd', // Fill in the appSign that you get from ZEGOCLOUD Admin Console.
+            '10d55f45bce2456b6c5efd3dd3efd0e5b243d4817423f786283eac60d6d9578e', // Fill in the appSign that you get from ZEGOCLOUD Admin Console.
         userID: userId,
         userName: userName,
         callID: callID,

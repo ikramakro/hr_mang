@@ -40,9 +40,9 @@ class _TodayScreenState extends State<TodayScreen> {
 
     /// 4/5. initialized ZegoUIKitPrebuiltCallInvitationService when account is logged in or re-logged in
     ZegoUIKitPrebuiltCallInvitationService().init(
-      appID: 2002727599 /*input your AppID*/,
+      appID: 605501723 /*input your AppID*/,
       appSign:
-          "5bc06ed01eefd54688d73293b7ad35c05db2a750b3bfd974394f2c63695ef4fd" /*input your AppSign*/,
+          "10d55f45bce2456b6c5efd3dd3efd0e5b243d4817423f786283eac60d6d9578e" /*input your AppSign*/,
       userID: userid,
       userName: username,
       notifyWhenAppRunningInBackgroundOrQuit: true,

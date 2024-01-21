@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, unnecessary_cast, use_key_in_widget_constructors, library_private_types_in_public_api, use_rethrow_when_possible, avoid_print, use_build_context_synchronously
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -101,8 +102,10 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     } catch (e) {
       throw e;
     }
-    loginCustomerChat();
-    loginuserforcall();
+    if (!kIsWeb) {
+      loginCustomerChat();
+      loginuserforcall();
+    }
   }
 
   Future<void> _refreshData() async {
@@ -127,9 +130,9 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
 
     /// 4/5. initialized ZegoUIKitPrebuiltCallInvitationService when account is logged in or re-logged in
     ZegoUIKitPrebuiltCallInvitationService().init(
-      appID: 2002727599 /*input your AppID*/,
+      appID: 605501723 /*input your AppID*/,
       appSign:
-          "5bc06ed01eefd54688d73293b7ad35c05db2a750b3bfd974394f2c63695ef4fd" /*input your AppSign*/,
+          "10d55f45bce2456b6c5efd3dd3efd0e5b243d4817423f786283eac60d6d9578e" /*input your AppSign*/,
       userID: userid,
       userName: username,
       notifyWhenAppRunningInBackgroundOrQuit: true,

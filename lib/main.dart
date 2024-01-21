@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hr_management_system/firebase_options.dart';
@@ -8,6 +9,7 @@ import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
+
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -17,15 +19,16 @@ main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-  
+
   ZIMKit().init(
-    appID: 2036562534,
-    appSign: '04fe16b9bea50d4db2110047374665a531304dd32e6be171f844af62a7304d13',
+    appID: 1499431836,
+    appSign: '6c57d8caf0f285698aa200fafa7fb97230403b621412be79e0e9130611887101',
   );
 
   ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
 
   // call the useSystemCallingUI
+
   ZegoUIKit().initLog().then((value) {
     ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
       [ZegoUIKitSignalingPlugin()],
@@ -34,6 +37,7 @@ main() async {
     runApp(MyApp(navigatorKey: navigatorKey));
     // runApp(const MyApp());
   });
+  runApp(MyApp(navigatorKey: navigatorKey));
 }
 
 class MyApp extends StatefulWidget {
