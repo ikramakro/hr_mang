@@ -170,8 +170,10 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
           IconButton(
               onPressed: () async {
                 signOut(context);
-                ZegoUIKitPrebuiltCallInvitationService().uninit();
-                await ZIMKit().disconnectUser();
+                if (!kIsWeb) {
+                  ZegoUIKitPrebuiltCallInvitationService().uninit();
+                  await ZIMKit().disconnectUser();
+                }
               },
               icon: const Icon(Icons.logout))
         ],
@@ -295,58 +297,60 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                             // component is not dragged.
                             child: ListTile(
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                          'Video and Voice Group call'),
-                                      content: Row(children: [
-                                        ZegoSendCallInvitationButton(
-                                          iconSize: const Size(20, 30),
-                                          // buttonSize: const Size(20, 20),
-                                          icon: ButtonIcon(
-                                            icon: const Icon(
-                                              Icons.call,
+                                if (!kIsWeb) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                            'Video and Voice Group call'),
+                                        content: Row(children: [
+                                          ZegoSendCallInvitationButton(
+                                            iconSize: const Size(20, 30),
+                                            // buttonSize: const Size(20, 20),
+                                            icon: ButtonIcon(
+                                              icon: const Icon(
+                                                Icons.call,
+                                              ),
                                             ),
+                                            callID: 'VC12345',
+                                            isVideoCall: false,
+                                            resourceID: 'zegouikit_call',
+                                            invitees: [
+                                              ZegoUIKitUser(
+                                                id: userList[index].userId,
+                                                name: userList[index].name,
+                                              ),
+                                            ],
                                           ),
-                                          callID: 'VC12345',
-                                          isVideoCall: false,
-                                          resourceID: 'zegouikit_call',
-                                          invitees: [
-                                            ZegoUIKitUser(
-                                              id: userList[index].userId,
-                                              name: userList[index].name,
+                                          ZegoSendCallInvitationButton(
+                                            iconSize: const Size(20, 30),
+                                            // buttonSize: const Size(20, 20),
+                                            icon: ButtonIcon(
+                                              icon: const Icon(
+                                                Icons.video_call,
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                        ZegoSendCallInvitationButton(
-                                          iconSize: const Size(20, 30),
-                                          // buttonSize: const Size(20, 20),
-                                          icon: ButtonIcon(
-                                            icon: const Icon(
-                                              Icons.video_call,
-                                            ),
+                                            callID: 'VD12345',
+                                            isVideoCall: true,
+                                            resourceID: 'zegouikit_call',
+                                            invitees: [
+                                              ZegoUIKitUser(
+                                                id: userList[index].userId,
+                                                name: userList[index].name,
+                                              ),
+                                            ],
                                           ),
-                                          callID: 'VD12345',
-                                          isVideoCall: true,
-                                          resourceID: 'zegouikit_call',
-                                          invitees: [
-                                            ZegoUIKitUser(
-                                              id: userList[index].userId,
-                                              name: userList[index].name,
-                                            ),
-                                          ],
-                                        ),
-                                      ]),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {},
-                                            child: const Text('Cancel'))
-                                      ],
-                                    );
-                                  },
-                                );
+                                        ]),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {},
+                                              child: const Text('Cancel'))
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
                               },
                               title: Text(user.name),
                               subtitle: Text(user.phoneNumber),
@@ -357,109 +361,96 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                                     Expanded(
                                       child: IconButton(
                                         onPressed: () {
-                                          //Fill in a String type value.
-                                          loginCustomerChat().then((value) {
-                                            //This will be triggered when login successful.
+                                          if (!kIsWeb) {
+                                            //Fill in a String type value.
+                                            loginCustomerChat().then((value) {
+                                              //This will be triggered when login successful.
 
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return CustomerChatScreen(
-                                                    id: userList[index].userId,
-                                                    logo:
-                                                        'assets/images/hrbg.png',
-                                                    name: userList[index].name,
-                                                  );
-                                                },
-                                              ),
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return CustomerChatScreen(
+                                                      id: userList[index]
+                                                          .userId,
+                                                      logo:
+                                                          'assets/images/hrbg.png',
+                                                      name:
+                                                          userList[index].name,
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            });
+                                            debugPrint(
+                                              '=======12',
                                             );
-                                          });
-                                          debugPrint(
-                                            '=======12',
-                                          );
+                                          }
                                         },
                                         icon: const Icon(
                                           Icons.message_rounded,
                                         ),
                                       ),
                                     ),
-                                    Expanded(
-                                      child: ZegoSendCallInvitationButton(
-                                        iconSize: const Size(20, 30),
-                                        // buttonSize: const Size(20, 20),
-                                        icon: ButtonIcon(
-                                          icon: const Icon(
-                                            Icons.call,
+                                    if (!kIsWeb)
+                                      Expanded(
+                                        child: ZegoSendCallInvitationButton(
+                                          iconSize: const Size(20, 30),
+                                          // buttonSize: const Size(20, 20),
+                                          icon: ButtonIcon(
+                                            icon: const Icon(
+                                              Icons.call,
+                                            ),
                                           ),
+                                          isVideoCall: false,
+                                          resourceID: 'zegouikit_call',
+                                          invitees: [
+                                            ZegoUIKitUser(
+                                              id: userList[index].userId,
+                                              name: userList[index].name,
+                                            ),
+                                          ],
                                         ),
-                                        isVideoCall: false,
-                                        resourceID: 'zegouikit_call',
-                                        invitees: [
-                                          ZegoUIKitUser(
-                                            id: userList[index].userId,
-                                            name: userList[index].name,
-                                          ),
-                                        ],
+                                      ),
+                                    Expanded(
+                                      child: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.call,
+                                        ),
                                       ),
                                     ),
-                                    // Expanded(
-                                    //   child: IconButton(
-                                    //     onPressed: () {
-                                    //       loginuserforcall().then((value) {
-                                    //         //This will be triggered when login successful.
-                                    //         Navigator.push(
-                                    //           context,
-                                    //           MaterialPageRoute(
-                                    //             builder: (context) {
-                                    //               return CallPage(
-                                    //                 callID: 'khsd',
-                                    //                 userId: id,
-                                    //                 userName: name,
-                                    //               );
-                                    //             },
-                                    //           ),
-                                    //         );
-                                    //       });
-                                    //       debugPrint(
-                                    //         '=======12',
-                                    //       );
-                                    //     },
-                                    //     icon: const Icon(
-                                    //       Icons.call,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    Expanded(
-                                      child: ZegoSendCallInvitationButton(
-                                        // iconSize: const Size(10, 10),
-                                        // buttonSize: const Size(10, 10),
-                                        iconSize: const Size(20, 30),
-                                        icon: ButtonIcon(
-                                          icon: const Icon(
-                                            Icons.video_call,
+                                    if (!kIsWeb)
+                                      Expanded(
+                                        child: ZegoSendCallInvitationButton(
+                                          // iconSize: const Size(10, 10),
+                                          // buttonSize: const Size(10, 10),
+                                          iconSize: const Size(20, 30),
+                                          icon: ButtonIcon(
+                                            icon: const Icon(
+                                              Icons.video_call,
+                                            ),
                                           ),
+                                          isVideoCall: true,
+                                          resourceID: 'zegouikit_call',
+                                          invitees: [
+                                            ZegoUIKitUser(
+                                              id: userList[index].userId,
+                                              name: userList[index].name,
+                                            ),
+                                          ],
                                         ),
-                                        isVideoCall: true,
-                                        resourceID: 'zegouikit_call',
-                                        invitees: [
-                                          ZegoUIKitUser(
-                                            id: userList[index].userId,
-                                            name: userList[index].name,
-                                          ),
-                                        ],
+                                      ),
+                                    Expanded(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          print('video call');
+                                        },
+                                        icon: const Icon(
+                                          Icons.video_call,
+                                        ),
                                       ),
                                     ),
-                                    // Expanded(
-                                    //   child: IconButton(
-                                    //     onPressed: () {
-                                    //       print('video call');
-                                    //     },
-                                    //     icon: const Icon(
-                                    //       Icons.video_call,
-                                    //     ),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -600,112 +591,98 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                                 width: 100,
                                 child: Row(
                                   children: [
+                                    if (!kIsWeb)
+                                      Expanded(
+                                        child: IconButton(
+                                          onPressed: () {
+                                            //Fill in a String type value.
+                                            loginCustomerChat().then((value) {
+                                              //This will be triggered when login successful.
+
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return CustomerChatScreen(
+                                                      id: userList[index]
+                                                          .userId,
+                                                      logo:
+                                                          'assets/images/hrbg.png',
+                                                      name:
+                                                          userList[index].name,
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            });
+                                            debugPrint(
+                                              '=======12',
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.message_rounded,
+                                          ),
+                                        ),
+                                      ),
+                                    if (!kIsWeb)
+                                      Expanded(
+                                        child: ZegoSendCallInvitationButton(
+                                          iconSize: const Size(20, 30),
+                                          // buttonSize: const Size(20, 20),
+                                          icon: ButtonIcon(
+                                            icon: const Icon(
+                                              Icons.call,
+                                            ),
+                                          ),
+                                          isVideoCall: false,
+                                          resourceID: 'zegouikit_call',
+                                          invitees: [
+                                            ZegoUIKitUser(
+                                              id: userList[index].userId,
+                                              name: userList[index].name,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    Expanded(
+                                      child: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.call,
+                                        ),
+                                      ),
+                                    ),
+                                    if (!kIsWeb)
+                                      Expanded(
+                                        child: ZegoSendCallInvitationButton(
+                                          // iconSize: const Size(10, 10),
+                                          // buttonSize: const Size(10, 10),
+                                          iconSize: const Size(20, 30),
+                                          icon: ButtonIcon(
+                                            icon: const Icon(
+                                              Icons.video_call,
+                                            ),
+                                          ),
+                                          isVideoCall: true,
+                                          resourceID: 'zegouikit_call',
+                                          invitees: [
+                                            ZegoUIKitUser(
+                                              id: userList[index].userId,
+                                              name: userList[index].name,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     Expanded(
                                       child: IconButton(
                                         onPressed: () {
-                                          //Fill in a String type value.
-                                          loginCustomerChat().then((value) {
-                                            //This will be triggered when login successful.
-
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return CustomerChatScreen(
-                                                    id: userList[index].userId,
-                                                    logo:
-                                                        'assets/images/hrbg.png',
-                                                    name: userList[index].name,
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          });
-                                          debugPrint(
-                                            '=======12',
-                                          );
+                                          print('video call');
                                         },
                                         icon: const Icon(
-                                          Icons.message_rounded,
+                                          Icons.video_call,
                                         ),
                                       ),
                                     ),
-                                    Expanded(
-                                      child: ZegoSendCallInvitationButton(
-                                        iconSize: const Size(20, 30),
-                                        // buttonSize: const Size(20, 20),
-                                        icon: ButtonIcon(
-                                          icon: const Icon(
-                                            Icons.call,
-                                          ),
-                                        ),
-                                        isVideoCall: false,
-                                        resourceID: 'zegouikit_call',
-                                        invitees: [
-                                          ZegoUIKitUser(
-                                            id: userList[index].userId,
-                                            name: userList[index].name,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    // Expanded(
-                                    //   child: IconButton(
-                                    //     onPressed: () {
-                                    //       loginuserforcall().then((value) {
-                                    //         //This will be triggered when login successful.
-                                    //         Navigator.push(
-                                    //           context,
-                                    //           MaterialPageRoute(
-                                    //             builder: (context) {
-                                    //               return CallPage(
-                                    //                 callID: 'khsd',
-                                    //                 userId: id,
-                                    //                 userName: name,
-                                    //               );
-                                    //             },
-                                    //           ),
-                                    //         );
-                                    //       });
-                                    //       debugPrint(
-                                    //         '=======12',
-                                    //       );
-                                    //     },
-                                    //     icon: const Icon(
-                                    //       Icons.call,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    Expanded(
-                                      child: ZegoSendCallInvitationButton(
-                                        // iconSize: const Size(10, 10),
-                                        // buttonSize: const Size(10, 10),
-                                        iconSize: const Size(20, 30),
-                                        icon: ButtonIcon(
-                                          icon: const Icon(
-                                            Icons.video_call,
-                                          ),
-                                        ),
-                                        isVideoCall: true,
-                                        resourceID: 'zegouikit_call',
-                                        invitees: [
-                                          ZegoUIKitUser(
-                                            id: userList[index].userId,
-                                            name: userList[index].name,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    // Expanded(
-                                    //   child: IconButton(
-                                    //     onPressed: () {
-                                    //       print('video call');
-                                    //     },
-                                    //     icon: const Icon(
-                                    //       Icons.video_call,
-                                    //     ),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -795,109 +772,96 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                                     Expanded(
                                       child: IconButton(
                                         onPressed: () {
-                                          //Fill in a String type value.
-                                          loginCustomerChat().then((value) {
-                                            //This will be triggered when login successful.
+                                          if (!kIsWeb) {
+                                            //Fill in a String type value.
+                                            loginCustomerChat().then((value) {
+                                              //This will be triggered when login successful.
 
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return CustomerChatScreen(
-                                                    id: userList[index].userId,
-                                                    logo:
-                                                        'assets/images/hrbg.png',
-                                                    name: userList[index].name,
-                                                  );
-                                                },
-                                              ),
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return CustomerChatScreen(
+                                                      id: userList[index]
+                                                          .userId,
+                                                      logo:
+                                                          'assets/images/hrbg.png',
+                                                      name:
+                                                          userList[index].name,
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            });
+                                            debugPrint(
+                                              '=======12',
                                             );
-                                          });
-                                          debugPrint(
-                                            '=======12',
-                                          );
+                                          }
                                         },
                                         icon: const Icon(
                                           Icons.message_rounded,
                                         ),
                                       ),
                                     ),
-                                    Expanded(
-                                      child: ZegoSendCallInvitationButton(
-                                        iconSize: const Size(20, 30),
-                                        // buttonSize: const Size(20, 20),
-                                        icon: ButtonIcon(
-                                          icon: const Icon(
-                                            Icons.call,
+                                    if (!kIsWeb)
+                                      Expanded(
+                                        child: ZegoSendCallInvitationButton(
+                                          iconSize: const Size(20, 30),
+                                          // buttonSize: const Size(20, 20),
+                                          icon: ButtonIcon(
+                                            icon: const Icon(
+                                              Icons.call,
+                                            ),
                                           ),
+                                          isVideoCall: false,
+                                          resourceID: 'zegouikit_call',
+                                          invitees: [
+                                            ZegoUIKitUser(
+                                              id: userList[index].userId,
+                                              name: userList[index].name,
+                                            ),
+                                          ],
                                         ),
-                                        isVideoCall: false,
-                                        resourceID: 'zegouikit_call',
-                                        invitees: [
-                                          ZegoUIKitUser(
-                                            id: userList[index].userId,
-                                            name: userList[index].name,
-                                          ),
-                                        ],
+                                      ),
+                                    Expanded(
+                                      child: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.call,
+                                        ),
                                       ),
                                     ),
-                                    // Expanded(
-                                    //   child: IconButton(
-                                    //     onPressed: () {
-                                    //       loginuserforcall().then((value) {
-                                    //         //This will be triggered when login successful.
-                                    //         Navigator.push(
-                                    //           context,
-                                    //           MaterialPageRoute(
-                                    //             builder: (context) {
-                                    //               return CallPage(
-                                    //                 callID: 'khsd',
-                                    //                 userId: id,
-                                    //                 userName: name,
-                                    //               );
-                                    //             },
-                                    //           ),
-                                    //         );
-                                    //       });
-                                    //       debugPrint(
-                                    //         '=======12',
-                                    //       );
-                                    //     },
-                                    //     icon: const Icon(
-                                    //       Icons.call,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    Expanded(
-                                      child: ZegoSendCallInvitationButton(
-                                        // iconSize: const Size(10, 10),
-                                        // buttonSize: const Size(10, 10),
-                                        iconSize: const Size(20, 30),
-                                        icon: ButtonIcon(
-                                          icon: const Icon(
-                                            Icons.video_call,
+                                    if (!kIsWeb)
+                                      Expanded(
+                                        child: ZegoSendCallInvitationButton(
+                                          // iconSize: const Size(10, 10),
+                                          // buttonSize: const Size(10, 10),
+                                          iconSize: const Size(20, 30),
+                                          icon: ButtonIcon(
+                                            icon: const Icon(
+                                              Icons.video_call,
+                                            ),
                                           ),
+                                          isVideoCall: true,
+                                          resourceID: 'zegouikit_call',
+                                          invitees: [
+                                            ZegoUIKitUser(
+                                              id: userList[index].userId,
+                                              name: userList[index].name,
+                                            ),
+                                          ],
                                         ),
-                                        isVideoCall: true,
-                                        resourceID: 'zegouikit_call',
-                                        invitees: [
-                                          ZegoUIKitUser(
-                                            id: userList[index].userId,
-                                            name: userList[index].name,
-                                          ),
-                                        ],
+                                      ),
+                                    Expanded(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          print('video call');
+                                        },
+                                        icon: const Icon(
+                                          Icons.video_call,
+                                        ),
                                       ),
                                     ),
-                                    // Expanded(
-                                    //   child: IconButton(
-                                    //     onPressed: () {
-                                    //       print('video call');
-                                    //     },
-                                    //     icon: const Icon(
-                                    //       Icons.video_call,
-                                    //     ),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),

@@ -30,6 +30,11 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
+        },
+        {
+            "src": "icons/hrbg.png",
+            "sizes": "512x512",
+            "type": "image/png"
         }
     ]
 }

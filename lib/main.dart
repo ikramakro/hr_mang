@@ -19,24 +19,26 @@ main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-
-  ZIMKit().init(
-    appID: 1499431836,
-    appSign: '6c57d8caf0f285698aa200fafa7fb97230403b621412be79e0e9130611887101',
-  );
-
-  ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
-
-  // call the useSystemCallingUI
-
-  ZegoUIKit().initLog().then((value) {
-    ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
-      [ZegoUIKitSignalingPlugin()],
+  if (!kIsWeb) {
+    ZIMKit().init(
+      appID: 1499431836,
+      appSign:
+          '6c57d8caf0f285698aa200fafa7fb97230403b621412be79e0e9130611887101',
     );
 
-    runApp(MyApp(navigatorKey: navigatorKey));
-    // runApp(const MyApp());
-  });
+    ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
+
+    // call the useSystemCallingUI
+
+    ZegoUIKit().initLog().then((value) {
+      ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
+        [ZegoUIKitSignalingPlugin()],
+      );
+
+      runApp(MyApp(navigatorKey: navigatorKey));
+      // runApp(const MyApp());
+    });
+  }
   runApp(MyApp(navigatorKey: navigatorKey));
 }
 

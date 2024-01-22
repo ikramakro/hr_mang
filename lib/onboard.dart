@@ -23,10 +23,8 @@ class _OnboardScreenState extends State<OnboardScreen> {
           ),
           child: Column(
             children: [
-              const Image(
-                image: AssetImage(
-                  'assets/images/hrbg.png',
-                ),
+              Image.asset(
+                'assets/images/hrbg.png',
               ),
               10.heightBox,
               const Text(
