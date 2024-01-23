@@ -163,8 +163,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     departmentController.text.isNotEmpty &&
                                     emailController.text.isNotEmpty) {
                                   result = await FilePicker.platform.pickFiles(
-                                    type: FileType.custom,
-                                    allowedExtensions: ['pdf'],
+                                    type: FileType.any,
+                                    // allowedExtensions: ['pdf'],
                                   );
 
                                   print('done');
@@ -235,103 +235,105 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }
             return Container(
               padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'User Profile',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'User Profile',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  ListTile(
-                    leading: const Icon(Icons.person),
-                    title: const Text(
-                      'Name',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    const SizedBox(height: 20),
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: const Text(
+                        'Name',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        userName,
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
-                    subtitle: Text(
-                      userName,
-                      style: const TextStyle(fontSize: 16),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.email),
+                      title: const Text(
+                        'Email',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        userEmail,
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    leading: const Icon(Icons.email),
-                    title: const Text(
-                      'Email',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.phone),
+                      title: const Text(
+                        'Phone',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        userPhone,
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
-                    subtitle: Text(
-                      userEmail,
-                      style: const TextStyle(fontSize: 16),
+                    ListTile(
+                      leading: const Icon(Icons.money),
+                      title: const Text(
+                        'Salary',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        userSalary,
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    leading: const Icon(Icons.phone),
-                    title: const Text(
-                      'Phone',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ListTile(
+                      leading: const Icon(Icons.work),
+                      title: const Text(
+                        'Duration',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        userDuration,
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
-                    subtitle: Text(
-                      userPhone,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.money),
-                    title: const Text(
-                      'Salary',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      userSalary,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.work),
-                    title: const Text(
-                      'Duration',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      userDuration,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  // Center(
-                  //   child: GestureDetector(
-                  //     onTap: () {
-                  //       getPdfAndUpload();
-                  //     },
-                  //     child: Container(
-                  //       width: 100,
-                  //       height: 100,
-                  //       child: Center(
-                  //         child: Text(
-                  //           'Upload your CV',
-                  //           style: TextStyle(
-                  //               color: Colors.white,
-                  //               fontSize: 10,
-                  //               fontWeight: FontWeight.w500),
-                  //         ),
-                  //       ),
-                  //       decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(30),
-                  //           color: Colors.deepPurple),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
+                    // Center(
+                    //   child: GestureDetector(
+                    //     onTap: () {
+                    //       getPdfAndUpload();
+                    //     },
+                    //     child: Container(
+                    //       width: 100,
+                    //       height: 100,
+                    //       child: Center(
+                    //         child: Text(
+                    //           'Upload your CV',
+                    //           style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: 10,
+                    //               fontWeight: FontWeight.w500),
+                    //         ),
+                    //       ),
+                    //       decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(30),
+                    //           color: Colors.deepPurple),
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             );
           }

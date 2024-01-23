@@ -361,7 +361,7 @@ class _DCUserDetailScreenState extends State<DCUserDetailScreen> {
 
     try {
       await FirebaseFirestore.instance
-          .collection('DC')
+          .collection('head')
           .doc(widget.user.id)
           .update({
         'name': updatedName,

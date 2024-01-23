@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,12 +22,17 @@ Future getPdfAndUpload(
 
   if (result != null) {
     File file = File(result.files.single.path!);
+    Uint8List? uploadfile = result.files.single.bytes;
     // ignore: unnecessary_brace_in_string_interps
     String fileName = '${randomName}.pdf';
     print(fileName);
     print('${file.readAsBytesSync()}');
-    await savePdf(Uint8List.fromList(file.readAsBytesSync()), fileName, dep,
-        username, email);
+    if (!kIsWeb) {
+      savePdf(Uint8List.fromList(file.readAsBytesSync()), fileName, dep,
+          username, email);
+    } else {
+      savePdf(uploadfile!, fileName, dep, username, email);
+    }
   }
 }
 
